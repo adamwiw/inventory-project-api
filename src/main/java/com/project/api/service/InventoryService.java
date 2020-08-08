@@ -10,6 +10,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.UUID;
+
 @Service
 public class InventoryService {
     private final ReactiveRedisOperations<String, InventoryItem> inventoryItemReactiveRedisOperations;
@@ -22,7 +24,7 @@ public class InventoryService {
 
         RedisSerializationContext<String, InventoryItem> context = builder.value(serializer).build();
 
-         inventoryItemReactiveRedisOperations = new ReactiveRedisTemplate<>(factory, context);
+        inventoryItemReactiveRedisOperations = new ReactiveRedisTemplate<>(factory, context);
     }
 
     public Flux<InventoryItem> get(String id) {
@@ -33,7 +35,9 @@ public class InventoryService {
     public Flux<InventoryItem> update(InventoryItem inventoryItem) {
         return inventoryItemReactiveRedisOperations
                 .opsForValue()
-                .set(inventoryItem.getId(), inventoryItem)
+                .set(inventoryItem.getId().length() == 0 ?
+                        UUID.randomUUID().toString() :
+                        inventoryItem.getId(), inventoryItem)
                 .thenMany(inventoryItemReactiveRedisOperations
                         .keys(inventoryItem.getId())
                         .flatMap(inventoryItemReactiveRedisOperations.opsForValue()::get));
