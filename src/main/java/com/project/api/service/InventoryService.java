@@ -34,13 +34,14 @@ public class InventoryService {
     }
 
     public Flux<InventoryItem> update(InventoryItem inventoryItem) {
+        String key = StringUtils.isBlank(inventoryItem.getId()) ?
+                UUID.randomUUID().toString() :
+                inventoryItem.getId();
         return inventoryItemReactiveRedisOperations
                 .opsForValue()
-                .set(StringUtils.isBlank(inventoryItem.getId()) ?
-                        UUID.randomUUID().toString() :
-                        inventoryItem.getId(), inventoryItem)
+                .set(key, inventoryItem)
                 .thenMany(inventoryItemReactiveRedisOperations
-                        .keys(inventoryItem.getId())
+                        .keys(key)
                         .flatMap(inventoryItemReactiveRedisOperations.opsForValue()::get));
     }
 
