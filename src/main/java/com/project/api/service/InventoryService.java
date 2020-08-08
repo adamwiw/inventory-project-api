@@ -1,6 +1,7 @@
 package com.project.api.service;
 
 import com.project.api.entity.InventoryItem;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
@@ -35,7 +36,7 @@ public class InventoryService {
     public Flux<InventoryItem> update(InventoryItem inventoryItem) {
         return inventoryItemReactiveRedisOperations
                 .opsForValue()
-                .set(inventoryItem.getId().length() == 0 ?
+                .set(StringUtils.isBlank(inventoryItem.getId()) ?
                         UUID.randomUUID().toString() :
                         inventoryItem.getId(), inventoryItem)
                 .thenMany(inventoryItemReactiveRedisOperations
