@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class InventoryItem {
     private String id;
     private String name;
+    private String barcode;
 }
