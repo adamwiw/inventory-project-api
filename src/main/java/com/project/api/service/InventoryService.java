@@ -1,7 +1,6 @@
 package com.project.api.service;
 
 import com.project.api.entity.InventoryItem;
-import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Flux;
 import java.util.UUID;
 
 @Service
-@Log
 public class InventoryService {
     private final ReactiveRedisOperations<String, InventoryItem> inventoryItemReactiveRedisOperations;
 
@@ -39,7 +37,7 @@ public class InventoryService {
         String key = StringUtils.isBlank(inventoryItem.getId()) ?
                 UUID.randomUUID().toString() :
                 inventoryItem.getId();
-        log.severe(StringUtils.isBlank(inventoryItem.getId())?"key is blank":"key is not blank");
+        inventoryItem.setId(key);
         return inventoryItemReactiveRedisOperations
                 .opsForValue()
                 .set(key, inventoryItem)
