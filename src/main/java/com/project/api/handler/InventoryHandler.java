@@ -23,8 +23,8 @@ public class InventoryHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(serverRequest.
-                        bodyToFlux(InventoryItem.class)
+                .body(serverRequest
+                        .bodyToFlux(InventoryItem.class)
                         .flatMap(inventoryItem ->
                                 inventoryService.update(inventoryItem)), InventoryItem.class);
     }
