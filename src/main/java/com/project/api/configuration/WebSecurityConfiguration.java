@@ -59,8 +59,6 @@ public class WebSecurityConfiguration implements WebFluxConfigurer {
             ServerHttpSecurity http,
             JwtTokenProvider tokenProvider) {
         return http
-                .cors()
-                .and()
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
