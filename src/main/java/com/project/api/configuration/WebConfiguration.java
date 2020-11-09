@@ -15,7 +15,7 @@ public class WebConfiguration {
     @Bean
     CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("localhost", "mytrustedwebsite.com"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("localhost", "baka-inventory-frontend.herokuapp.com"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsWebFilter(source);
