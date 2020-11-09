@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -51,8 +50,8 @@ public class ApiConfiguration {
                 .build();
 
         return RouterFunctions
-                .route(POST("/auth/register").and(accept(APPLICATION_JSON)), userHandler::register)
-                .andRoute(POST("/auth/login").and(accept(APPLICATION_JSON)), userHandler::login)
+                .route(POST("/auth/sign-up").and(accept(APPLICATION_JSON)), userHandler::signUp)
+                .andRoute(POST("/auth/sign-in").and(accept(APPLICATION_JSON)), userHandler::signIn)
                 .andRoute(GET("/inventory/{id}").and(accept(APPLICATION_JSON)), inventoryHandler::inventoryGet)
                 .andRoute(PUT("/inventory").and(accept(APPLICATION_JSON)), inventoryHandler::inventoryUpdate)
                 .andRoute(DELETE("/inventory/{id}").and(accept(APPLICATION_JSON)), inventoryHandler::inventoryDelete);

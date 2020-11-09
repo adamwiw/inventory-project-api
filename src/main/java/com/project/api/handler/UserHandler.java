@@ -1,6 +1,6 @@
 package com.project.api.handler;
 
-import com.project.api.entity.LoginResponse;
+import com.project.api.entity.SignInResponse;
 import com.project.api.entity.User;
 import com.project.api.exception.UsernameAlreadyExistsException;
 import com.project.api.security.JwtTokenProvider;
@@ -23,7 +23,7 @@ public class UserHandler {
     private PasswordEncoder passwordEncoder;
     private JwtTokenProvider tokenProvider;
 
-    public Mono<ServerResponse> register(ServerRequest request) {
+    public Mono<ServerResponse> signUp(ServerRequest request) {
         return request
                 .bodyToMono(User.class)
                 .flatMap(user -> userService
@@ -45,7 +45,7 @@ public class UserHandler {
                                         .next(), User.class)));
     }
 
-    public Mono<ServerResponse> login(ServerRequest request) {
+    public Mono<ServerResponse> signIn(ServerRequest request) {
         return request
                 .bodyToMono(User.class)
                 .flatMap(user -> authenticationManager
@@ -56,7 +56,7 @@ public class UserHandler {
                     return ServerResponse
                             .ok()
                             .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", jwt))
-                            .body(Mono.just(new LoginResponse(jwt)), LoginResponse.class);
+                            .body(Mono.just(new SignInResponse(jwt)), SignInResponse.class);
                 });
     }
 }
