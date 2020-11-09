@@ -18,6 +18,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
@@ -58,15 +59,17 @@ public class WebSecurityConfiguration implements WebFluxConfigurer {
     public SecurityWebFilterChain springWebFilterChain(
             ServerHttpSecurity http,
             JwtTokenProvider tokenProvider) {
-        return http
+        return http.cors(corsSpec ->
+                corsSpec.configurationSource(serverWebExchange ->
+                        new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .authorizeExchange(it -> it
-                                .pathMatchers("/inventory/**")
-                                .authenticated()
-                                .anyExchange()
-                                .permitAll()
+                        .pathMatchers("/inventory/**")
+                        .authenticated()
+                        .anyExchange()
+                        .permitAll()
                 )
                 .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
                 .build();

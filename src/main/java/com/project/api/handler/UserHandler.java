@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -46,7 +45,6 @@ public class UserHandler {
                                         .next(), User.class)));
     }
 
-    @CrossOrigin("https://baka-inventory-frontend.herokuapp.com")
     public Mono<ServerResponse> signIn(ServerRequest request) {
         return request
                 .bodyToMono(User.class)
